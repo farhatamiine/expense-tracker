@@ -3,7 +3,6 @@ import { Dialog, Transition } from "@headlessui/react";
 import { classNames, cn } from "@/lib/utils";
 import {
   BarChart,
-  BarChart3,
   CogIcon,
   HomeIcon,
   MenuIcon,
