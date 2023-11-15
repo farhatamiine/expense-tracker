@@ -3,28 +3,49 @@ import { Dialog, Transition } from "@headlessui/react";
 import { classNames, cn } from "@/lib/utils";
 import {
   BarChart,
-  CalendarIcon,
-  FolderIcon,
+  BarChart3,
+  CogIcon,
   HomeIcon,
   MenuIcon,
-  UsersIcon,
+  PiggyBank,
+  ReceiptIcon,
+  Wallet,
   XIcon,
 } from "lucide-react";
+import { useUserContext } from "@/context/AuthContext";
 
 const navigation = [
   { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Team", href: "#", icon: UsersIcon, current: false },
-  { name: "Projects", href: "#", icon: FolderIcon, current: false },
-  { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
+  { name: "Income", href: "#", icon: PiggyBank, current: false },
+  { name: "Expenses", href: "#", icon: ReceiptIcon, current: false },
   { name: "Reports", href: "#", icon: BarChart, current: false },
+  { name: "Settings", href: "#", icon: CogIcon, current: false },
 ];
-const teams = [
-  { id: 1, name: "Heroicons", href: "#", initial: "H", current: false },
-  { id: 2, name: "Tailwind Labs", href: "#", initial: "T", current: false },
-  { id: 3, name: "Workcation", href: "#", initial: "W", current: false },
+
+const accounts = [
+  {
+    id: 1,
+    name: "Saving Account",
+    href: "#",
+    initial: "SA",
+    current: false,
+    amount: "4200",
+  },
+  {
+    id: 2,
+    name: "Freelancing",
+    href: "#",
+    initial: "F",
+    current: false,
+    amount: "1000",
+  },
 ];
 function RootLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const { user } = useUserContext();
+  const CurrencySign = "€";
+
   return (
     <div className="h-full w-full">
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -82,11 +103,8 @@ function RootLayout() {
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-2 ring-1 ring-white/10">
                   <div className="flex h-16 shrink-0 items-center">
-                    <img
-                      className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
-                    />
+                    <Wallet />
+                    Money Manager
                   </div>
                   <nav className="flex flex-1 flex-col">
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -115,24 +133,31 @@ function RootLayout() {
                       </li>
                       <li>
                         <div className="text-xs font-semibold leading-6 text-gray-400">
-                          Your teams
+                          My Accounts
                         </div>
                         <ul role="list" className="-mx-2 mt-2 space-y-1">
-                          {teams.map((team) => (
-                            <li key={team.name}>
+                          {accounts.map((account) => (
+                            <li key={account.name}>
                               <a
-                                href={team.href}
+                                href={account.href}
                                 className={classNames(
-                                  team.current
+                                  account.current
                                     ? "bg-gray-800 text-white"
                                     : "text-gray-400 hover:text-white hover:bg-gray-800",
                                   "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                                 )}
                               >
                                 <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
-                                  {team.initial}
+                                  {account.initial}
                                 </span>
-                                <span className="truncate">{team.name}</span>
+                                <span className="flex flex-col font-bold">
+                                  <span className="truncate">
+                                    {account.name}
+                                  </span>
+                                  <span className="truncate text-green-800">
+                                    {account.amount} {CurrencySign}
+                                  </span>
+                                </span>
                               </a>
                             </li>
                           ))}
@@ -150,12 +175,9 @@ function RootLayout() {
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6">
-          <div className="flex h-16 shrink-0 items-center">
-            <img
-              className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-              alt="Your Company"
-            />
+          <div className="flex h-16 gap-4 shrink-0 items-center">
+            <Wallet />
+            Money Manager
           </div>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -184,24 +206,31 @@ function RootLayout() {
               </li>
               <li>
                 <div className="text-xs font-semibold leading-6 text-gray-400">
-                  Your teams
+                  My Accounts
                 </div>
                 <ul role="list" className="-mx-2 mt-2 space-y-1">
-                  {teams.map((team) => (
-                    <li key={team.name}>
+                  {accounts.map((account) => (
+                    <li key={account.name}>
                       <a
-                        href={team.href}
+                        href={account.href}
                         className={classNames(
-                          team.current
+                          account.current
                             ? "bg-gray-800 text-white"
                             : "text-gray-400 hover:text-white hover:bg-gray-800",
                           "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                         )}
                       >
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
-                          {team.initial}
+                        <span className="flex items-center gap-3">
+                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
+                            {account.initial}
+                          </span>
+                          <span className="flex flex-col font-bold">
+                            <span className="truncate">{account.name}</span>
+                            <span className="truncate text-green-800">
+                              {account.amount} {CurrencySign}
+                            </span>
+                          </span>
                         </span>
-                        <span className="truncate">{team.name}</span>
                       </a>
                     </li>
                   ))}
@@ -214,11 +243,11 @@ function RootLayout() {
                 >
                   <img
                     className="h-8 w-8 rounded-full bg-gray-800"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    src={user.imageUrl}
                     alt=""
                   />
                   <span className="sr-only">Your profile</span>
-                  <span aria-hidden="true">Tom Cook</span>
+                  <span aria-hidden="true">{user.fullName}</span>
                 </a>
               </li>
             </ul>

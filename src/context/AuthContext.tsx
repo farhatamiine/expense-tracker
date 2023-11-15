@@ -39,7 +39,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
             if (currentAccount) {
                 setUser({
                     id: currentAccount.$id,
-                    fullName: currentAccount.name,
+                    fullName: currentAccount.fullName,
                     username: currentAccount.username,
                     email: currentAccount.email,
                     imageUrl: currentAccount.imageUrl,
